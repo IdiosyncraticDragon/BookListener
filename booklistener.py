@@ -4,17 +4,32 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 import pyttsx
+import io
+import linecache
+import pdb
 
 if __name__ == '__main__':
   engine = pyttsx.init()
-  _file = open(cfg.BOOK_PATH)
-  numLinePrefetch = 100000
+  _file = io.open(cfg.BOOK_PATH,'rU',encoding='utf-8')
+  numLinePrefetch = cfg.PREFETCH_NUM
+  startReadPoint = cfg.READ_RATIO
+
+  # count the total lines
+  totalLines = len(_file.readlines())#readlines could accept a parameters to indicate the sizeint to read! not the lines!
+  print u"本文一共{}行".format(totalLines)
+  _file.close()
+
+  # start reading
+  print u'从{}%的地方开始阅读'.format(startReadPoint*100)
+  startReadPoint = int(totalLines*startReadPoint)
+
+  print u"从第{}行开始阅读".format(startReadPoint)
+  processedLines=0
   while True:
-    lines = _file.readlines(numLinePrefetch)
-    if not lines:
+    line =  linecache.getline(cfg.BOOK_PATH,startReadPoint+processedLines)
+    if not line:
       break
-    for line in lines:
-       print line
-       engine.say(line)
-       engine.runAndWait()
-    engine.endLoop()
+    print line
+    engine.say(line)
+    engine.runAndWait()
+    processedLines += 1
