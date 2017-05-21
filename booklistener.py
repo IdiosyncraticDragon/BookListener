@@ -15,6 +15,6 @@ if __name__ == '__main__':
       break
     for line in lines:
        print line
-       engine.say('您好！')
+       engine.say(line)
        engine.runAndWait()
     engine.endLoop()
