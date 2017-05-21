@@ -20,8 +20,11 @@ if __name__ == '__main__':
   _file.close()
 
   # start reading
-  print u'从{}%的地方开始阅读'.format(startReadPoint*100)
-  startReadPoint = int(totalLines*startReadPoint)
+  if startReadPoint<1:
+      print u'从{}%的地方开始阅读'.format(startReadPoint * 100)
+      startReadPoint = int(totalLines*startReadPoint)
+  else:
+      print u'从{}%的地方开始阅读'.format(startReadPoint * 100./totalLines)
 
   print u"从第{}行开始阅读".format(startReadPoint)
   processedLines=0
@@ -29,7 +32,7 @@ if __name__ == '__main__':
     line =  linecache.getline(cfg.BOOK_PATH,startReadPoint+processedLines)
     if not line:
       break
-    print '{}%[{}]:{}'.format((startReadPoint+processedLines)*100./totalLines, processedLines, line)
+    print '{}%[{}->{}]:{}'.format((startReadPoint+processedLines)*100./totalLines, startReadPoint, processedLines, line)
     engine.say(line)
     engine.runAndWait()
     processedLines += 1
