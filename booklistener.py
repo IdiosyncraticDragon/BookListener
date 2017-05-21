@@ -29,7 +29,7 @@ if __name__ == '__main__':
     line =  linecache.getline(cfg.BOOK_PATH,startReadPoint+processedLines)
     if not line:
       break
-    print line
+    print '{}%[{}]:{}'.format((startReadPoint+processedLines)*100./totalLines, processedLines, line)
     engine.say(line)
     engine.runAndWait()
     processedLines += 1
